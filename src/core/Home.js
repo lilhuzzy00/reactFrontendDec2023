@@ -1,0 +1,160 @@
+import React,{useState, useEffect} from "react";
+import Layout from "./Layout";
+import {getProducts, productByCategory} from "./ApiCore";
+import Card from "./Card";
+import "./Card.css";
+import {Helmet} from "react-helmet";
+// import Searched from "./Search";
+
+
+const Home = () =>{
+	const [productsByArrival, setProductsByArrival] = useState([]);
+	const [gentShoes, setGentShoes] = useState([]);
+	const [shirts, setShirts] = useState([]);
+	const [trouser, setTrousers] = useState([]);
+	// const [productsFromCategoryy, setProductsFromCategoryy] = useState([]);
+	// const [productsBySell, setProductsBySell] = useState([]);
+	const [error, setError] = useState(false);
+
+		
+	const loadProductsByArrival = () =>{
+		getProducts("createdAt")
+			.then(data =>{
+				if(data.error){
+					setError(data.error)
+				}else{
+					setProductsByArrival(data)
+				}
+			})
+	}
+
+
+	const loadProductsByShoes = () =>{
+		productByCategory("659035229e896e35281ec072")
+			.then(data =>{
+				if(data.error){
+					setError(data.error)
+				}else{
+					setGentShoes(data)
+				}
+			})
+	}
+
+
+	const loadShirts = () =>{
+		productByCategory("659035e69e896e35281ec073")
+			.then(data =>{
+				if(data.error){
+					setError(data.error)
+				}else{
+					setShirts(data)
+				}
+			})
+	}
+
+	const loadTrousers = () =>{
+		productByCategory("659035f79e896e35281ec074")
+			.then(data =>{
+				if(data.error){
+					setError(data.error)
+				}else{
+					setTrousers(data)
+				}
+			})
+	}
+
+	// const loadProductsBySell = () =>{
+	// 	getProducts("sold")
+	// 		.then(data =>{
+	// 			if(data.error){
+	// 				setError(data.error)
+	// 			}else{
+	// 				setProductsBySell(data)
+	// 			}
+	// 		})
+	// }
+
+
+	useEffect(() =>{
+		loadProductsByArrival()
+		loadProductsByShoes()
+		loadShirts()
+		loadTrousers()
+	}, [])
+
+
+	return(
+		<Layout title="Homepage" description="Node js Ecommerce App">
+			<Helmet>
+				<meta charSet="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				<title>House of Goodiz</title>
+				<meta property="og:image" content="https://www.houseofgoodiz.com/images/image.png" />
+				<meta name="description" content="Home page. View our list of products and shop"/>
+			</Helmet>
+
+{/*				<Searched />
+*/}				<div className="firstDiv" style={{backgroundColor: "white"}}>
+				<div className="h4Div"><h4 style={{fontSize: "1.25rem", fontWeight: "bold", color: "white"}} >Best Seller</h4></div>
+					<div>
+						<div className="divTop">
+							{productsByArrival.map((product, i)=>(
+								<Card key={i} product={product} />
+							))}
+						</div>
+					</div>	
+				</div>
+
+
+				<div className="firstDiv" style={{backgroundColor: "white"}}>
+				<div className="h4Div"><h4 style={{fontSize: "1.25rem", fontWeight: "bold", color: "white"}} >Ladies & Gent Shoes</h4></div>
+					<div>
+						<div className="divTop">
+							{gentShoes.map((product, i)=>(
+								<Card key={i} product={product} />
+							))}
+						</div>
+					</div>	
+				</div>
+
+				<div className="firstDiv" style={{backgroundColor: "white"}}>
+				<div className="h4Div"><h4 style={{fontSize: "1.25rem", fontWeight: "bold", color: "white"}} >Shirts & Polo</h4></div>
+					<div>
+						<div className="divTop">
+							{shirts.map((product, i)=>(
+								<Card key={i} product={product} />
+							))}
+						</div>
+					</div>	
+				</div>
+
+
+				<div className="firstDiv" style={{backgroundColor: "white"}}>
+				<div className="h4Div"><h4 style={{fontSize: "1.25rem", fontWeight: "bold", color: "white"}} >Trousers For Men & Women</h4></div>
+					<div>
+						<div className="divTop">
+							{trouser.map((product, i)=>(
+								<Card key={i} product={product} />
+							))}
+						</div>
+					</div>	
+				</div>
+
+				{/*<div className="firstDiv" style={{backgroundColor: "white"}}>
+				<div className="h4Div"><h4 style={{fontSize: "1.25rem", fontWeight: "bold", color: "white"}} >Best Seller</h4></div>
+					<div>
+						
+						<div className="divTop">
+							{productsBySell.map((product, i)=>(
+								<Card key={i} product={product} />
+							))}
+						</div>
+					</div>	
+				</div>*/}	
+
+		</Layout>
+	)
+}
+
+
+export default Home
